@@ -47,7 +47,7 @@ function render(list) {
         } else {
             $("#box").html()
             for (i = 0; i < list.length; i++) {
-                $("#box").append('<div id="url' + i + '" style="mt-1 mb-1"><span style="max-width: 200px;white-space: nowrap;display: inline-block;overflow: hidden;text-overflow: ellipsis;line-height: 1.5;">' + list[i].url + '</span><a href="#" style="float: right;">' + i18n_text.copy_btn + '</a></div>');
+                $("#box").append('<div id="url' + i + '" style="mt-1 mb-1"><span title="'+ list[i].url+'" style="max-width: 200px;white-space: nowrap;display: inline-block;overflow: hidden;text-overflow: ellipsis;line-height: 1.5;">' + list[i].url + '</span><a href="#" style="float: right;">' + i18n_text.copy_btn + '</a></div>');
                 $("#url" + i).click(list[i], copyUrl);
             }
         }
