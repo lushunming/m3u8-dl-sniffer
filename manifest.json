@@ -1,5 +1,5 @@
 {
-    "name": "M3U8Sniffer2",
+    "name": "m3u8-dl-sniffer",
     "description": "Sniff for m3u8 hyperlinks in web pages.",
     "version": "1.0.0",
     "manifest_version": 3,

@@ -6,14 +6,14 @@ var i18n_text = {}
 $(function () {
     //i18n
     if (language == "zh-cn") {
-        i18n_text.ext_name = "m3u8嗅探器2"
-        i18n_text.copy_msg = "复制成功！"
-        i18n_text.copy_btn = "复制"
+        i18n_text.ext_name = "m3u8嗅探推送"
+        i18n_text.copy_msg = "推送成功！"
+        i18n_text.copy_btn = "推送"
         i18n_text.nothing_msg = "空空如也！<br>请尝试刷新页面！"
     } else {
         i18n_text.ext_name = "m3u8Sniffer2"
-        i18n_text.copy_msg = "Copy Success!"
-        i18n_text.copy_btn = "Copy"
+        i18n_text.copy_msg = "push Success!"
+        i18n_text.copy_btn = "push"
         i18n_text.nothing_msg = "Find nothing!<br>Please try refreshing!"
     }
     $("#ext-name").text(i18n_text.ext_name)
