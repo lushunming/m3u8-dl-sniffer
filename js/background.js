@@ -4,8 +4,9 @@ var url = ""
 //chrome.storage.session.setAccessLevel({accessLevel:'TRUSTED_AND_UNTRUSTED_CONTEXTS'})
 
 //监听页面网络请求
-chrome.webRequest.onBeforeRequest.addListener(details => {
+chrome.webRequest.onSendHeaders.addListener(details => {
     chrome.tabs.query({ active: true }, tabs => {
+       
         if (url != tabs[0].url) {
             m3u8list = []
         }
@@ -17,8 +18,9 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
             tmp = details.url.trim()
         }
         if (pattern.test(tmp)) {
+            
             if (m3u8list.indexOf(details.url)==-1) {
-                m3u8list.push(details.url)
+                m3u8list.push({url:details.url,headers:details.requestHeaders})
                 getCurrentTab().then((tab)=>{
                     var tabId = ("tab"+tab.id).toString()
                     chrome.storage.session.set({[tabId]:m3u8list})
@@ -27,7 +29,7 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
             }
         }
     });
-}, { urls: ["<all_urls>"] }, ["extraHeaders"]);
+}, { urls: ["<all_urls>"] }, ["extraHeaders","requestHeaders"]);
 
 //获取当前标签页
 async function getCurrentTab() {
