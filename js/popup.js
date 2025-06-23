@@ -1,4 +1,5 @@
 var m3u8list = [];
+var title="";
 //chrome.storage.session.setAccessLevel({accessLevel:'TRUSTED_AND_UNTRUSTED_CONTEXTS'})
 var language = (navigator.language || navigator.userLanguage).toLowerCase();
 var i18n_text = {}
@@ -28,6 +29,7 @@ $(function () {
 async function getData() {
     getCurrentTab().then((tab) => {
         let tabId = "tab" + tab.id
+        title=tab.title;
         chrome.storage.session.get([tabId]).then((value) => {
             if (!isEmptyObject(value)) {
                 value[tabId].forEach(element => {
@@ -73,7 +75,7 @@ function copyUrl(obj) {
                 url: obj.data.url, headers: obj.data.headers.reduce((acc, header) => {
                     acc[header.name] = header.value;
                     return acc;
-                }, {}), "filename": "推送视频",
+                }, {}), "filename":  title,
                 "saveDir": "./downloads"
             }]
         })
