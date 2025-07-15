@@ -1,10 +1,16 @@
 var m3u8list = [];
-var title="";
+var title = "";
 //chrome.storage.session.setAccessLevel({accessLevel:'TRUSTED_AND_UNTRUSTED_CONTEXTS'})
 var language = (navigator.language || navigator.userLanguage).toLowerCase();
 var i18n_text = {}
+var address
+
 
 $(function () {
+    getAddress().then((value) => {
+        address = value
+    })
+
     //i18n
     if (language == "zh-cn") {
         i18n_text.ext_name = "m3u8嗅探推送"
@@ -24,12 +30,16 @@ $(function () {
     })
     getData()
 })
-
+async function getAddress() {
+    var address = await chrome.storage.sync.get('address');
+    console.log(address)
+    return address.address
+}
 //获取session内的存储数据
 async function getData() {
     getCurrentTab().then((tab) => {
         let tabId = "tab" + tab.id
-        title=tab.title;
+        title = tab.title;
         chrome.storage.session.get([tabId]).then((value) => {
             if (!isEmptyObject(value)) {
                 value[tabId].forEach(element => {
@@ -49,7 +59,7 @@ function render(list) {
         } else {
             $("#box").html()
             for (i = 0; i < list.length; i++) {
-                $("#box").append('<div id="url' + i + '" style="mt-1 mb-1"><span title="'+ list[i].url+'" style="max-width: 200px;white-space: nowrap;display: inline-block;overflow: hidden;text-overflow: ellipsis;line-height: 1.5;">' + list[i].url + '</span><a href="#" style="float: right;">' + i18n_text.copy_btn + '</a></div>');
+                $("#box").append('<div id="url' + i + '" style="mt-1 mb-1"><span title="' + list[i].url + '" style="max-width: 200px;white-space: nowrap;display: inline-block;overflow: hidden;text-overflow: ellipsis;line-height: 1.5;">' + list[i].url + '</span><a href="#" style="float: right;">' + i18n_text.copy_btn + '</a></div>');
                 $("#url" + i).click(list[i], copyUrl);
             }
         }
@@ -65,7 +75,7 @@ async function getCurrentTab() {
 
 //复制链接到剪切板
 function copyUrl(obj) {
-    fetch("http://localhost:6600/download", {
+    fetch(address + "download", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -75,7 +85,7 @@ function copyUrl(obj) {
                 url: obj.data.url, headers: obj.data.headers.reduce((acc, header) => {
                     acc[header.name] = header.value;
                     return acc;
-                }, {}), "filename":  title,
+                }, {}), "filename": title,
                 "saveDir": "./downloads"
             }]
         })
