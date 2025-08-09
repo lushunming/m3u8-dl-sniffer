@@ -59,13 +59,31 @@ function render(list) {
         } else {
             $("#box").html()
             for (i = 0; i < list.length; i++) {
-                $("#box").append('<div id="url' + i + '" style="mt-1 mb-1"><span title="' + list[i].url + '" style="max-width: 200px;white-space: nowrap;display: inline-block;overflow: hidden;text-overflow: ellipsis;line-height: 1.5;">' + list[i].url + '</span><a href="#" style="float: right;">' + i18n_text.copy_btn + '</a></div>');
+               // $("#box").append('<div id="url' + i + '" style="mt-1 mb-1"><span title="' + list[i].url + '" style="max-width: 200px;white-space: nowrap;display: inline-block;overflow: hidden;text-overflow: ellipsis;line-height: 1.5;">' + list[i].url + '</span><span>'+formatFileSize(list[i].length)+'</span><a href="#" style="float: right;">' + i18n_text.copy_btn + '</a></div>');
+                $("#box").append(' <tr id="url' + i + '" ><td  title="'+list[i].url + '"> '+list[i].url+'</td><td >'+formatFileSize(list[i].length)+'</td><td ><a href="#" style="float: right;">' + i18n_text.copy_btn + '</a></td></tr>');
                 $("#url" + i).click(list[i], copyUrl);
             }
         }
     }
 }
 
+
+ 
+/**
+ * 文件大小单位转换
+ * @param {number} bytes 文件的字节数。单位B
+ * @returns 
+ */
+function formatFileSize (bytes) {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  let u = 0;
+  let size = bytes;
+  while (size >= 1024 && u < units.length - 1) {
+    size /= 1024;
+    ++u;
+  }
+  return `${size.toFixed(2)} ${units[u]}`;
+}
 //获取当前标签页
 async function getCurrentTab() {
     let queryOptions = { active: true, currentWindow: true };
